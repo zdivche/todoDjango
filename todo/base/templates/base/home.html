@@ -1,0 +1,50 @@
+{% extends 'main.html' %}
+
+{% block content %}
+
+
+<div class="container text-left row ">
+
+  <div class="col-2 text-primary-emphasis bg-primary-subtle border border-primary-subtle rounded-3">
+    <h3>Browse Topics</h3>
+    <hr>
+    <div>
+      <a class='text-primary-emphasis link-underline link-underline-opacity-0' href="{% url 'home' %}">All</a>
+    </div>
+    <br>
+    {% for topic in topics %}
+      <div class =''>
+        <a class="text-primary-emphasis link-underline link-underline-opacity-0" href="{% url 'home' %}?q={{topic.name}}">{{topic}}</a>
+      </div>
+    {% endfor %} 
+  </div>
+
+
+  <div class="col-6 text-primary-emphasis bg-success-subtle border border-primary-subtle rounded-3">
+    <h5 class="text-center">{{article_count}} articles</h5>
+    <div class="d-flex justify-content-center">
+      <a class=" link-underline link-underline-opacity-0 btn btn-outline-success" href="{% url 'create-article' %}">Create a new article</a>
+    </div>
+    
+    <div>
+      {% for article in articles %}
+      <div>
+        {% if request.user == article.author%}
+        <div class="d-flex justify-content-between">
+          <a class="text-primary-emphasis link-underline link-underline-opacity-0 btn btn-outline-dark" href="{% url 'update-article' article.id %}">Edit</a>
+          <a class="link-underline link-underline-opacity-0 btn btn-outline-dark" href="{% url 'delete-article' article.id %}">Delete</a>
+        </div>
+        {% endif %}
+        <br>
+        <h6 class="text-dark-emphasis">{{article.topic.name}}</h6>
+        <h5>
+          {{article.author.username}} - <a class=" text-primary-emphasis link-underline link-underline-opacity-0" href="{% url 'article' article.id%}">{{article.name}}</a>
+        </h5>
+        <hr>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+{% endblock content %}
